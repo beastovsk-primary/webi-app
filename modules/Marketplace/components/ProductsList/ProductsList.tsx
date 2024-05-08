@@ -1,44 +1,25 @@
 'use client';
 
 import Btn from '@/components/UI/Btn/Btn';
-import {formatProductPrice, getProductsList, getTypeName} from '@/src/helpers/hooks';
-import {Empty, Popover} from 'antd';
-import Image, {StaticImageData} from 'next/image';
+import {formatProductPrice} from '@/src/helpers/hooks';
 import Link from 'next/link';
-import React, {FC, useEffect, useState} from 'react';
-import {IProduct} from '../../types';
+import React, {FC, useEffect} from 'react';
+import {IService} from '../../types';
 import s from './ProductsList.module.scss';
 
-import image from 'public/image/card-banner.png';
-import {useStore} from '../../store';
 import PreloaderImage from '@/components/PreloaderImage/PreloaderImage';
-import {CheckOutlined} from '@ant-design/icons';
+import {EditOutlined} from '@ant-design/icons';
 
 import {animated, useInView} from '@react-spring/web';
-import {useQuery} from 'react-query';
-import {GetProducts} from '../../api';
 
 interface ProductsListProps {
   title: string;
-  productsList: IProduct[];
+  productsList: IService[];
   isLoading: boolean;
 }
 
-export const ProductsList: FC<ProductsListProps> = ({title, isLoading}) => {
-  const basketList = localStorage.getItem('basketList');
-  // const {data, isLoading, isSuccess} = useQuery('productsList', GetProducts);
-
-  const productsList = getProductsList().results;
-  const copyList = useStore((store) => store.basketList);
-  const setCopyList = useStore((store) => store.setBasketList);
-
-  useEffect(() => {
-    if (basketList?.length || basketList) {
-      return setCopyList(JSON.parse(basketList) || []);
-    }
-
-    localStorage.setItem('basketList', JSON.stringify([]));
-  }, []);
+export const ProductsList: FC<ProductsListProps> = ({title, isLoading, productsList}) => {
+  const profileId = localStorage.getItem('id');
 
   const [ref, springs] = useInView(
     () => ({
@@ -57,7 +38,7 @@ export const ProductsList: FC<ProductsListProps> = ({title, isLoading}) => {
         <svg
           className='w-10 h-10 text-gray-200 dark:text-gray-600'
           aria-hidden='true'
-          xmlns='http://www.w3.org/2000/svg'
+          xmlns='https://www.w3.org/2000/svg'
           fill='currentColor'
           viewBox='0 0 16 20'
         >
@@ -79,11 +60,11 @@ export const ProductsList: FC<ProductsListProps> = ({title, isLoading}) => {
       </div>
 
       <div className={s.list}>
-        {productsList.length ? (
-          productsList.map(({id, price, name, type, small_image}) => (
+        {productsList?.length ? (
+          productsList.map(({owner_id, id, title, price, images}) => (
             <Link href={`/marketplace/products/${id}`} className={s.item} key={id}>
               <PreloaderImage
-                src={small_image || image}
+                src={images[0]}
                 objectFit='cover'
                 alt=''
                 width={300}
@@ -91,43 +72,30 @@ export const ProductsList: FC<ProductsListProps> = ({title, isLoading}) => {
                 className='h-[170px] w-full object-cover md:w-full rounded-3xl'
               />
 
-              <h2 className='my-5 text-lg font-medium'>{name}</h2>
+              <h2 className='my-5 text-lg font-medium'>
+                {title}
+                {profileId == owner_id ? (
+                  <Link href={`/marketplace/products/${id}/update`}>
+                    <EditOutlined className='text-[#6F4FF2] ml-3 hover:opacity-70 transition-opacity' />
+                  </Link>
+                ) : null}
+              </h2>
 
-              <div className='flex justify-between mb-5'>
-                <span>
-                  Тип: <p className='text-[#6F4FF2]'>{getTypeName(type)}</p>
-                </span>
+              <div className='flex justify-end mb-5'>
                 <span className='flex flex-col items-end'>
                   Цена: <p className='text-[#6F4FF2]'>{formatProductPrice(price)}</p>
                 </span>
               </div>
 
-              <Btn
-                disabled={!!copyList?.filter((item) => item.id == id).length}
-                className='w-full mt-auto'
-                onClick={(e: any) => {
-                  e.preventDefault();
-                  const basketArray = JSON.parse(basketList);
-
-                  localStorage.setItem(
-                    'basketList',
-                    JSON.stringify([
-                      ...(basketArray?.length ? basketArray : []),
-                      productsList.filter((item) => item.id == id).at(-1)
-                    ])
-                  );
-
-                  setCopyList([...basketArray, productsList.filter((item) => item.id == id).at(-1)]);
-                }}
-              >
-                {!!copyList?.filter((item) => item.id == id).length ? (
-                  <>
-                    <CheckOutlined /> Добавлено
-                  </>
-                ) : (
-                  'Добавить в корзину'
-                )}
-              </Btn>
+              {owner_id != profileId ? (
+                <Link href={`/marketplace/purchase?serviceId=${id}`}>
+                  <Btn className='w-full mt-auto'>Оформить заказ</Btn>
+                </Link>
+              ) : (
+                <Link href={`/marketplace/products/${id}/update`}>
+                  <Btn className='w-full'>Изменить сервис</Btn>
+                </Link>
+              )}
             </Link>
           ))
         ) : isLoading ? (

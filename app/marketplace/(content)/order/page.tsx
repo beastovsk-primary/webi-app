@@ -1,12 +1,7 @@
 import {Basket} from '@/modules/Marketplace/components/Basket/Basket';
+import {Order} from '@/modules/Marketplace/components/Order/Order';
 import React from 'react';
 
-import banner from '/public/image/marketplace-banner.png';
-
 export default function Page() {
-  return (
-    <>
-      <Basket />
-    </>
-  );
+  return <Order />;
 }

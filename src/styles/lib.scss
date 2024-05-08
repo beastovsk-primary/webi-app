@@ -46,5 +46,52 @@
 .ant-select-selection-item,
 .ant-input-affix-wrapper {
   color: rgba(255, 255, 255, 0.776) !important;
-  padding-top: 5px !important;
+  // padding-top: 5px !important;
+}
+
+.ant-upload-list-item {
+  border: 1px solid #424242 !important;
+}
+
+.ant-carousel,
+.slick-slider,
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
+.ql-toolbar {
+  background: #1d1932;
+  border-radius: 10px 10px 0 0;
+  border: none !important;
+}
+
+.ql-editor {
+  border-top: 1px solid #cccccc25 !important;
+}
+
+.ql-container {
+  background: #1d1932;
+  border-radius: 0 0 10px 10px;
+  border: none !important;
+}
+
+.ant-input-number {
+  background: #1d1932;
+  border: none !important;
+  padding: 5px 5px;
+  border-start-end-radius: 13px !important;
+  border-end-end-radius: 13px !important;
+  border-start-start-radius: 13px !important;
+  border-end-start-radius: 13px !important;
+}
+
+.ant-steps-finish-icon {
+  svg {
+    fill: #fff !important;
+  }
+}
+
+.ant-upload-wrapper .ant-upload-drag {
+  height: max-content !important;
 }

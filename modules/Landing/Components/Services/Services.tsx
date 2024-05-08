@@ -22,14 +22,26 @@ export const Services: FC<ServicesProps> = () => {
   );
 
   const servicesList = [
-    {title: 'Разработка', description: 'Создаем веб-проекты любой сложности', image: dev},
-    {title: 'UX/UI дизайн', description: 'Рисуем продающий дизайн, на который приятно смотреть', image: design},
-    {title: 'Поддержка', description: 'Возьмем на себя ответственность за ваши веб-ресурсы', image: support}
+    {
+      title: 'Оплата',
+      description: 'После добавление желаемого сервиса в корзину - вы приобретаете товар через платежную систему',
+      image: dev
+    },
+    {
+      title: 'Получение сервиса от продавца',
+      description: 'Мы запрашиваем репозиторий сервиса от продавца и передаем вам',
+      image: design
+    },
+    {
+      title: 'Выплата продавцу',
+      description: 'Продавец сервиса получает оплату',
+      image: support
+    }
   ];
   return (
     <animated.div ref={ref} style={springs} className={s.container} id='services'>
       <h1 className={s.title}>
-        Наши услуги лично для <span className='text-primary-500'>тебя</span>
+        Как происходит процесс <span className='text-primary-500'>оплаты и получения сервиса</span>
       </h1>
       <div className={s.list}>
         {servicesList.map(({title, description, image}) => (

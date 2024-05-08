@@ -1,23 +1,11 @@
-export interface IProduct {
-  id: number;
-  technology: Technology[];
-  modules: Modules[];
-  type: number;
-  name: string;
+export interface IService {
+  id: string;
+  owner_id: string;
+  title: string;
   price: number;
-  link: string;
-  publication_date: any;
+  images: string[];
+  video_link: string;
   description: string;
-  small_image: string;
-  full_image: string;
-}
-
-export interface Technology {
-  id: number;
-  label: string;
-}
-
-export interface Modules {
-  id: number;
-  label: string;
+  preview_link: string;
+  telegram: string;
 }
